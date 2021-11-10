@@ -35,7 +35,7 @@ def send_event(endpoint: str, msg: dict) -> None:
     logger.info('event generation initiated, Fetching access key')
 
     # get access key, for the given endpoint
-    # sample endpoint: https://event-function-topic.eastus-1.eventgrid.azure.net/api/events
+    # sample endpoint: https://<event-topic-name>.eastus-1.eventgrid.azure.net/api/events
     secret_name = endpoint[8:endpoint.index('.')]
 
     #keyvault name as env name
