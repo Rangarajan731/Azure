@@ -1,5 +1,6 @@
 import logging
 import json
+import os
 from datetime import datetime,timezone
 from azure.eventgrid import EventGridPublisherClient, EventGridEvent
 from azure.identity import DefaultAzureCredential
@@ -37,8 +38,8 @@ def send_event(endpoint: str, msg: dict) -> None:
     # sample endpoint: https://event-function-topic.eastus-1.eventgrid.azure.net/api/events
     secret_name = endpoint[8:endpoint.index('.')]
 
-    #keyvault name is hard coded here
-    vault_uri = 'https://event-keyvault.vault.azure.net/'
+    #keyvault name as env name
+    vault_uri = os.environ['key-vault']
     
     secret_client = SecretClient(vault_uri,DefaultAzureCredential()) #use default credential
     
