@@ -23,14 +23,13 @@ def send_event(endpoint: str, msg: dict) -> None:
         except json.decoder.JSONDecodeError as e:
             logger.exception(e)
             logger.info('exiting')
-            pass
-    try:
-        if not isinstance(msg,dict):
-            raise TypeError("expected <class 'str'> or <class 'dict'>, received {}".format(msg.__class__))
-    except Exception as e:
-        logger.exception(e)
-        logger.info('exiting')
-        pass
+            raise
+    
+    if not isinstance(msg,dict):
+        logger.exception("expected <class 'str'> or <class 'dict'>, received {}".format(msg.__class__))
+        logger.info("Exiting")
+        raise TypeError("expected <class 'str'> or <class 'dict'>, received {}".format(msg.__class__))
+   
     
     logger.info('event generation initiated, Fetching access key')
 
@@ -47,9 +46,9 @@ def send_event(endpoint: str, msg: dict) -> None:
     try:
         access_key = secret_client.get_secret(secret_name).value
     except Exception as e:
-        logger.exception(e)
-        logger.info('unable to obtain access key')
-        logger.info('exiting')
+        logger.exception("secret not found")
+        logger.info("exiting")
+        raise
     # sys.stdout.write(access_key)
     logger.info('Access key obtained successfully')
 
